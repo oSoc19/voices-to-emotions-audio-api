@@ -10,5 +10,7 @@ steps:
         "python37",
         "--memory",
         "2048MB",
+        "--region",
+        "europe-west1"
       ]
     dir: "functions/mfcc"

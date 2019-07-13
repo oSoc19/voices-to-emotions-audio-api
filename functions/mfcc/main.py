@@ -8,6 +8,31 @@ from werkzeug.utils import secure_filename
 ALLOWED_EXTENSIONS = ['aiff', 'wav']
 MFCC_FEATURES = 20
 
+emotion_dict = {
+    0: 'neutral',
+    1: 'calm',
+    2: 'happy',
+    3: 'sad',
+    4: 'angry',
+    5: 'fearful',
+    6: 'disgust',
+    7: 'surprised'
+}
+
+
+def map_predictions(predictions):
+    res = []
+    for p in predictions:
+        classes = p["classes"]
+        mapped_classes = {}
+
+        for i in range(0, len(classes)):
+            mapped_classes[emotion_dict[i]] = round(classes[i] * 10000) / 10000
+
+        res.append(mapped_classes)
+
+    return res
+
 
 def get_predictions(instances):
     project = 'voices-to-emotions'
@@ -87,7 +112,7 @@ def mfcc_post(request):
 
             os.remove(target_path)
 
-            predictions = get_predictions(mfcc)
+            predictions = map_predictions(get_predictions(mfcc))
 
             return jsonify({
                 "type": 'success',

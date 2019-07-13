@@ -48,8 +48,14 @@ def load_audio_data(file_path):
     return results, timestamps
 
 
-def parse_multipart(request):
-    # This code will process each file uploaded
+def mfcc_post(request):
+    if not request.method == 'POST':
+        return jsonify({
+            "type": 'error',
+            "message": "Unknown request"
+        })
+
+    # Process the audio file...
     f = request.files['audio']
 
     if f and f.filename:

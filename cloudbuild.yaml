@@ -4,12 +4,10 @@ steps:
       [
         "functions",
         "deploy",
-        "mfcc",
+        "mfcc_post",
         "--trigger-http",
         "--runtime",
         "python37",
-        "--entry-point",
-        "main.py",
         "--memory",
         "2048MB",
       ]

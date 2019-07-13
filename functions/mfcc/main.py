@@ -80,7 +80,13 @@ def mfcc_post(request):
         target_path = os.path.join(temp_dir, filename)
 
         if extname in ALLOWED_EXTENSIONS:
+            f.save(target_path)
+            f.close()
+
             mfcc, timestamps = load_audio_data(target_path)
+
+            os.remove(target_path)
+
             predictions = get_predictions(mfcc)
 
             return jsonify({

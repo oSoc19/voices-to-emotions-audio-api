@@ -1,19 +1,34 @@
 import os, math, tempfile
 import librosa
 import numpy as np
+import googleapiclient.discovery
 from flask import jsonify
 from werkzeug.utils import secure_filename
 
 ALLOWED_EXTENSIONS = ['aiff', 'wav']
-temp_dir = tempfile.gettempdir()
-mfcc_features = 20
+MFCC_FEATURES = 20
 
 
-def get_file_path(filename):
-    # Note: tempfile.gettempdir() points to an in-memory file system
-    # on GCF. Thus, any files in it must fit in the instance's memory.
-    file_name = secure_filename(filename)
-    return os.path.join(tempfile.gettempdir(), file_name)
+def get_predictions(instances):
+    project = 'voices-to-emotions'
+    model = 'emotionrecognition'
+    version = 'v1'
+
+    service = googleapiclient.discovery.build('ml', 'v1')
+    name = 'projects/{}/models/{}'.format(project, model)
+
+    if version is not None:
+        name += '/versions/{}'.format(version)
+
+    response = service.projects().predict(
+        name=name,
+        body={'instances': instances}
+    ).execute()
+
+    if 'error' in response:
+        raise RuntimeError(response['error'])
+
+    return response['predictions']
 
 
 def load_audio_data(file_path):
@@ -29,7 +44,7 @@ def load_audio_data(file_path):
         frag_duration = (offsets[1] - offsets[0]) / sr
 
         wave_fragment = wave[offsets[0]:offsets[1]]
-        mfcc = librosa.feature.mfcc(wave_fragment, sr, n_mfcc=mfcc_features)
+        mfcc = librosa.feature.mfcc(wave_fragment, sr, n_mfcc=MFCC_FEATURES)
         _, y_size = mfcc.shape
 
         splitted_mfcc = np.array_split(mfcc, math.ceil(y_size / 500), axis=1)
@@ -60,6 +75,7 @@ def mfcc_post(request):
 
     if f and f.filename:
         filename = secure_filename(f.filename)
+        temp_dir = tempfile.gettempdir()
         extname = filename.rsplit('.', 1)[1].lower()
         target_path = os.path.join(temp_dir, filename)
 
@@ -71,11 +87,14 @@ def mfcc_post(request):
 
             os.remove(target_path)
 
+            predictions = get_predictions(mfcc)
+
             return jsonify({
                 "type": 'success',
                 "data": {
-                    'mfcc': mfcc,
-                    'timestamps': timestamps
+                    'timestamps': timestamps,
+                    'emotions': predictions,
+                    'mfcc': mfcc
                 }
             })
 

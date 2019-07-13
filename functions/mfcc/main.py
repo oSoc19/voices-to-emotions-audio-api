@@ -12,7 +12,7 @@ MFCC_FEATURES = 20
 def get_predictions(instances):
     project = 'voices-to-emotions'
     model = 'emotionrecognition'
-    version = 'v1'
+    version = 'v1_1'
 
     service = discovery.build('ml', 'v1')
     name = 'projects/{}/models/{}'.format(project, model)

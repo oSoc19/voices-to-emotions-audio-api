@@ -1,13 +1,19 @@
-from flask import Flask, request, jsonify
-from werkzeug.utils import secure_filename
-import librosa, os, math, tempfile
+import os, math, tempfile
+import librosa
 import numpy as np
-
-app = Flask(__name__)
+from flask import jsonify
+from werkzeug.utils import secure_filename
 
 ALLOWED_EXTENSIONS = ['aiff', 'wav']
 temp_dir = tempfile.gettempdir()
 mfcc_features = 20
+
+
+def get_file_path(filename):
+    # Note: tempfile.gettempdir() points to an in-memory file system
+    # on GCF. Thus, any files in it must fit in the instance's memory.
+    file_name = secure_filename(filename)
+    return os.path.join(tempfile.gettempdir(), file_name)
 
 
 def load_audio_data(file_path):
@@ -42,51 +48,39 @@ def load_audio_data(file_path):
     return results, timestamps
 
 
-@app.route('/', methods=['POST'])
-def upload():
-    if request.method == 'POST':
-        f = request.files['audio']
+def parse_multipart(request):
+    # This code will process each file uploaded
+    f = request.files['audio']
 
-        if f and f.filename:
-            filename = secure_filename(f.filename)
-            extname = filename.rsplit('.', 1)[1].lower()
-            target_path = os.path.join(temp_dir, filename)
+    if f and f.filename:
+        filename = secure_filename(f.filename)
+        extname = filename.rsplit('.', 1)[1].lower()
+        target_path = os.path.join(temp_dir, filename)
 
-            if extname in ALLOWED_EXTENSIONS:
-                f.save(target_path)
-                f.close()
+        if extname in ALLOWED_EXTENSIONS:
+            f.save(target_path)
+            f.close()
 
-                mfcc, timestamps = load_audio_data(target_path)
+            mfcc, timestamps = load_audio_data(target_path)
 
-                os.remove(target_path)
+            os.remove(target_path)
 
-                return jsonify({
-                    "type": 'success',
-                    "data": {
-                        'mfcc': mfcc,
-                        'timestamps': timestamps
-                    }
-                })
-
-            else:
-                return jsonify({
-                    "type": 'error',
-                    "message": "Invalid filetype"
-                })
+            return jsonify({
+                "type": 'success',
+                "data": {
+                    'mfcc': mfcc,
+                    'timestamps': timestamps
+                }
+            })
 
         else:
             return jsonify({
                 "type": 'error',
-                "message": "Please provide a file"
+                "message": "Invalid filetype"
             })
 
     else:
         return jsonify({
             "type": 'error',
-            "message": "Unknown request"
+            "message": "Please provide a file"
         })
-
-
-# This is only used locally Google Cloud has some magic for this :)
-if __name__ == '__main__':
-    app.run(host='127.0.0.1', port=8080, debug=True)

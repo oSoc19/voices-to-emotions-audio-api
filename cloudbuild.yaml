@@ -1,3 +1,16 @@
 steps:
-  - name: 'gcr.io/cloud-builders/gcloud'
-    args: ['app', 'deploy']
+  - name: "gcr.io/cloud-builders/gcloud"
+    args:
+      [
+        "functions",
+        "deploy",
+        "mfcc",
+        "--trigger-http",
+        "--runtime",
+        "python37",
+        "--entry-point",
+        "main.py",
+        "--memory",
+        "2048MB",
+      ]
+    dir: "functions/mfcc"

@@ -5,7 +5,7 @@ from googleapiclient import discovery
 from flask import jsonify
 from werkzeug.utils import secure_filename
 
-ALLOWED_EXTENSIONS = ['aiff', 'wav']
+ALLOWED_EXTENSIONS = ['aiff', 'wav', 'mp3']
 MFCC_FEATURES = 20
 
 emotion_dict = {

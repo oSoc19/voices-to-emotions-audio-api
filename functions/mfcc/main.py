@@ -1,7 +1,7 @@
 import os, math, tempfile
 import librosa
 import numpy as np
-import googleapiclient.discovery
+from googleapiclient import discovery
 from flask import jsonify
 from werkzeug.utils import secure_filename
 
@@ -14,7 +14,7 @@ def get_predictions(instances):
     model = 'emotionrecognition'
     version = 'v1'
 
-    service = googleapiclient.discovery.build('ml', 'v1')
+    service = discovery.build('ml', 'v1')
     name = 'projects/{}/models/{}'.format(project, model)
 
     if version is not None:

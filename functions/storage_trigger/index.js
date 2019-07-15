@@ -12,8 +12,7 @@ exports.storage_trigger = async (data, context) => {
   let filename = data.name;
   let extension = path.extname(filename);
   if (!EXTENSIONS.includes(extension)) return;
-
-  let uri = BUCKET_ROOT_URL + BUCKET_NAME + "/" + filename;
+  
   let response = await new Promise(resolve =>
     https.request(
       {
@@ -39,5 +38,5 @@ exports.storage_trigger = async (data, context) => {
     }
   });
 
-  console.log({ uri, transcriptions });
+  console.log({ uri: `gs://${BUCKET_NAME}/${filename}`, transcriptions });
 };

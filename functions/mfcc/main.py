@@ -119,7 +119,7 @@ def mfcc_post(request):
                 "data": {
                     'timestamps': timestamps,
                     'emotions': predictions,
-                    'mfcc': mfcc
+                    # 'mfcc': mfcc
                 }
             })
 

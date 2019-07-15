@@ -13,6 +13,8 @@ exports.storage_trigger = async (data, context) => {
   let extension = path.extname(filename);
   if (!EXTENSIONS.includes(extension)) return;
 
+  console.log(process.env.MONGODB_CONN_STRING);
+
   var options = {
     uri: `https://europe-west1-voices-to-emotions.cloudfunctions.net/mfcc?uri=https://storage.googleapis.com/${BUCKET_NAME}/${filename}`,
     json: true

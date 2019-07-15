@@ -1,3 +1,8 @@
+secrets:
+  - kmsKeyName: projects/voices-to-emotions/locations/global/keyRings/MONGODB_CONN_STRING/cryptoKeys/MONGODB_CONN_STRING
+    secretEnv:
+      MONGODB_CONN_STRING: <base64-encoded encrypted secret>
+
 steps:
   - name: "gcr.io/cloud-builders/gcloud"
     args:
@@ -30,4 +35,5 @@ steps:
       "--region",
       "europe-west1"
     ]
+    secretEnv: ['MONGODB_CONN_STRING']
     dir: "functions/storage_trigger"

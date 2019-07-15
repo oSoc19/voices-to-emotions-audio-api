@@ -30,10 +30,10 @@ steps:
       "--region",
       "europe-west1"
     ]
-    secretEnv: ['MONGODB_CONN_STRING']
+    secretEnv: ["MONGODB_CONN_STRING"]
     dir: "functions/storage_trigger"
 
 secrets:
   - kmsKeyName: projects/voices-to-emotions/locations/global/keyRings/MONGODB_CONN_STRING/cryptoKeys/MONGODB_CONN_STRING
     secretEnv:
-      MONGODB_CONN_STRING: <base64-encoded encrypted secret>
+      MONGODB_CONN_STRING: CiQATqeISc2dk7IVQOp5u8DAOyd7OoHpTi/Zk3BGzo7pxAqMp18SIQAz3GQ01BtKgnKFkPaGcZ8NSI6YIWMUqNJBIkb5kqmWNQ==

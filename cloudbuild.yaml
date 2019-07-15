@@ -22,7 +22,7 @@ steps:
       "--trigger-resource",
       "voices-to-emotions-call-data",
       "--trigger-event",
-      "google.storage.object.finalize"
+      "google.storage.object.finalize",
       "--runtime",
       "nodejs8",
       "--memory",

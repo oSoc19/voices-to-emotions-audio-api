@@ -29,5 +29,5 @@ steps:
       "1024MB",
       "--region",
       "europe-west1"
-    ],
+    ]
     dir: "functions/storage_trigger"

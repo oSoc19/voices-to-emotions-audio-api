@@ -1,6 +1,5 @@
 const path = require("path");
 const https = require("https");
-const speech = require("@google-cloud/speech");
 const rp = require("request-promise-native");
 
 const EXTENSIONS = [".wav", ".mp3", ".aiff"];
@@ -21,18 +20,4 @@ exports.storage_trigger = async (data, context) => {
 
   let response = await rp(options);
   console.log({ response });
-
-  // Google Cloud Speech => Text
-  let speechClient = new speech.SpeechClient();
-  let [operation] = await speechClient.longRunningRecognize({
-    audio: { uri: `gs://${BUCKET_NAME}/${filename}` },
-    config: {
-      encoding: "LINEAR16",
-      sampleRateHertz: 16000,
-      languageCode: "en-US"
-    }
-  });
-  let [transcriptions] = await operation.promise();
-
-  console.log(transcriptions);
 };

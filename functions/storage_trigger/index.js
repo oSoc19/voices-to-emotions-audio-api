@@ -13,7 +13,7 @@ exports.storage_trigger = async (data, context) => {
   let extension = path.extname(filename);
   if (!EXTENSIONS.includes(extension)) return;
   
-  let response = await new Promise(resolve =>
+  /*let response = await new Promise(resolve =>
     https.request(
       {
         hostname: "europe-west1-voices-to-emotions.cloudfunctions.net",
@@ -23,9 +23,9 @@ exports.storage_trigger = async (data, context) => {
       },
       resolve
     )
-  );
+  );*/
 
-  console.log({ response });
+  // console.log({ response });
 
   // Google Cloud Speech => Text
   const client = new speech.SpeechClient();

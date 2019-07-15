@@ -23,7 +23,7 @@ emotion_dict = {
 
 def save_from_uri(uri):
     req = requests.get(uri)
-    if req.status == 200:
+    if req.status_code == 200:
         temp_dir = tempfile.gettempdir()
         extension = uri.rsplit('.', 1)[1].lower()
         file_path = os.path.join(temp_dir, 'temp.' + extension)

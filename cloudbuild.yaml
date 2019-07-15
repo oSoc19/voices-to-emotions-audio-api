@@ -36,4 +36,4 @@ steps:
 secrets:
   - kmsKeyName: projects/voices-to-emotions/locations/global/keyRings/MONGODB_CONN_STRING/cryptoKeys/MONGODB_CONN_STRING
     secretEnv:
-      MONGODB_CONN_STRING: CiQATqeISc2dk7IVQOp5u8DAOyd7OoHpTi/Zk3BGzo7pxAqMp18SIQAz3GQ01BtKgnKFkPaGcZ8NSI6YIWMUqNJBIkb5kqmWNQ==
+      MONGODB_CONN_STRING: CiQATqeISdkPbb50KHkCx4W0ZUrsk/UYJ5xQR1TI5LecR2lVHnsSIQAz3GQ0NZUK1AN858TZ7w4GEMCaB38k6eCS5siSxidVkQ==

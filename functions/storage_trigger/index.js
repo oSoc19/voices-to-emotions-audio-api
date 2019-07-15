@@ -27,26 +27,18 @@ exports.storage_trigger = async (data, context) => {
     )
   );
 
-  console.log(response);
+  console.log({ response });
 
+  // Google Cloud Speech => Text
   const client = new speech.SpeechClient();
-
-  // The audio file's encoding, sample rate in hertz, and BCP-47 language code
-  const request = {
+  const transcriptions = await client.recognize({
     audio: { uri },
     config: {
       encoding: "LINEAR16",
       sampleRateHertz: 16000,
       languageCode: "en-US"
     }
-  };
+  });
 
-  // Detects speech in the audio file
-  const [response] = await client.recognize(request);
-  const transcription = response.results
-    .map(result => result.alternatives[0].transcript)
-    .join("\n");
-  console.log(`Transcription: ${transcription}`);
-
-  console.log({ uri });
+  console.log({ uri, transcriptions });
 };

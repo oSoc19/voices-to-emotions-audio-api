@@ -1,15 +1,17 @@
+const path = require("path");
+
+const EXTENSIONS = [".wav", ".mp3", ".aiff"];
+const BUCKET_ROOT_URL =
+  "https://storage.cloud.google.com/voices-to-emotions-call-data/";
+
 // Background Cloud Function to be triggered by Cloud Storage.
 exports.storage_trigger = (data, context) => {
-  console.log(data);
-  console.log(data.name);
-  
-  if (data.resourceState === "not_exists") {
-    console.log(`File ${data.name} deleted.`);
-  } else if (data.metageneration === "1") {
-    // metageneration attribute is updated on metadata changes.
-    // on create value is 1
-    console.log(`File ${data.name} uploaded.`);
-  } else {
-    console.log(`File ${data.name} metadata updated.`);
-  }
+  if (data.resourceState === "not_exists") return;
+
+  let filename = data.name;
+  let extension = path.extname(filename);
+  if (!EXTENSIONS.includes(extension)) return;
+
+  let url = BUCKET_ROOT_URL + filename;
+  console.log({ url });
 };

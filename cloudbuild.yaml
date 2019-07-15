@@ -4,7 +4,7 @@ steps:
       [
         "functions",
         "deploy",
-        "mfcc_post",
+        "mfcc",
         "--trigger-http",
         "--runtime",
         "python37",

@@ -1,8 +1,7 @@
-import os, math, tempfile, gc
+import os, math, tempfile, gc, urllib3
 import librosa
 import numpy as np
 from flask import jsonify
-from werkzeug.utils import secure_filename
 
 # Google AI
 from googleapiclient import discovery
@@ -20,6 +19,20 @@ emotion_dict = {
     6: 'disgust',
     7: 'surprised'
 }
+
+http = urllib3.PoolManager()
+
+
+def save_from_uri(uri):
+    filedata = http.request('GET', uri)
+    temp_dir = tempfile.gettempdir()
+    extension = uri.rsplit('.', 1)[1].lower()
+    file_path = os.path.join(temp_dir, 'temp.' + extension)
+
+    with open(file_path, 'wb') as f:
+        f.write(filedata)
+
+    return file_path, extension
 
 
 def map_predictions(predictions):
@@ -90,34 +103,26 @@ def load_audio_data(file_path):
     return results, timestamps
 
 
-def mfcc_post(request):
-    if not request.method == 'POST':
+def mfcc(request):
+    if not request.method == 'GET':
         return jsonify({
             "type": 'error',
             "message": "Unknown request"
         })
 
-    # Process the audio file...
-    f = request.files['audio']
+    uri = request.args['uri']
+    if uri:
+        file_path, extension = save_from_uri(uri)
 
-    if f and f.filename:
-        filename = secure_filename(f.filename)
-        temp_dir = tempfile.gettempdir()
-        extname = filename.rsplit('.', 1)[1].lower()
-        target_path = os.path.join(temp_dir, filename)
-
-        if extname in ALLOWED_EXTENSIONS:
-            f.save(target_path)
-            f.close()
-
-            mfcc, timestamps = load_audio_data(target_path)
+        if extension in ALLOWED_EXTENSIONS:
+            mfcc, timestamps = load_audio_data(file_path)
             gc.collect()
 
             predictions = map_predictions(get_predictions(mfcc))
             gc.collect()
 
             # Remove the file, KEEP THIS AT THE END!
-            os.remove(target_path)
+            os.remove(file_path)
 
             return jsonify({
                 "type": 'success',

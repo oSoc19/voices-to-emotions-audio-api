@@ -1,4 +1,5 @@
 const path = require("path");
+const https = require('https');
 
 const EXTENSIONS = [".wav", ".mp3", ".aiff"];
 const BUCKET_ROOT_URL =
@@ -13,5 +14,8 @@ exports.storage_trigger = (data, context) => {
   if (!EXTENSIONS.includes(extension)) return;
 
   let url = BUCKET_ROOT_URL + filename;
+  let response = await new Promise(resolve => https.request({
+    
+  }, resolve);
   console.log({ url });
 };

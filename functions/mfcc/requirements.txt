@@ -1,4 +1,4 @@
 librosa
 numpy
 google-api-python-client
-urllib3
+requests

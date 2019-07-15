@@ -1,4 +1,4 @@
-import os, math, tempfile, gc, urllib3
+import os, math, tempfile, gc, requests
 import librosa
 import numpy as np
 from flask import jsonify
@@ -20,19 +20,19 @@ emotion_dict = {
     7: 'surprised'
 }
 
-http = urllib3.PoolManager()
-
 
 def save_from_uri(uri):
-    req = http.request('GET', uri)
+    req = requests.get(uri)
     if req.status == 200:
-        filedata = req.data
         temp_dir = tempfile.gettempdir()
         extension = uri.rsplit('.', 1)[1].lower()
         file_path = os.path.join(temp_dir, 'temp.' + extension)
 
+        print(req.encoding)
+        print(req.content)
+
         with open(file_path, 'wb') as f:
-            f.write(filedata)
+            f.write(req.content)
 
         return file_path, extension
 

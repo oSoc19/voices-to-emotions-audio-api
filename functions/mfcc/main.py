@@ -24,15 +24,19 @@ http = urllib3.PoolManager()
 
 
 def save_from_uri(uri):
-    filedata = http.request('GET', uri)
-    temp_dir = tempfile.gettempdir()
-    extension = uri.rsplit('.', 1)[1].lower()
-    file_path = os.path.join(temp_dir, 'temp.' + extension)
+    req = http.request('GET', uri)
+    if req.status == 200:
+        filedata = req.data
+        temp_dir = tempfile.gettempdir()
+        extension = uri.rsplit('.', 1)[1].lower()
+        file_path = os.path.join(temp_dir, 'temp.' + extension)
 
-    with open(file_path, 'wb') as f:
-        f.write(filedata)
+        with open(file_path, 'wb') as f:
+            f.write(filedata)
 
-    return file_path, extension
+        return file_path, extension
+
+    raise Exception('Invalid file type!')
 
 
 def map_predictions(predictions):

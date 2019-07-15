@@ -12,7 +12,7 @@ exports.storage_trigger = async (data, context) => {
   let filename = data.name;
   let extension = path.extname(filename);
   if (!EXTENSIONS.includes(extension)) return;
-  
+
   /*let response = await new Promise(resolve =>
     https.request(
       {
@@ -28,8 +28,8 @@ exports.storage_trigger = async (data, context) => {
   // console.log({ response });
 
   // Google Cloud Speech => Text
-  const client = new speech.SpeechClient();
-  const transcriptions = await client.longRunningRecognize({
+  let speechClient = new speech.SpeechClient();
+  let [operation] = await speechClient.longRunningRecognize({
     audio: { uri: `gs://${BUCKET_NAME}/${filename}` },
     config: {
       encoding: "LINEAR16",
@@ -37,6 +37,7 @@ exports.storage_trigger = async (data, context) => {
       languageCode: "en-US"
     }
   });
+  let transcriptions = await operation.promise();
 
-  console.log({ uri: `gs://${BUCKET_NAME}/${filename}`, transcriptions });
+  console.log(transcriptions);
 };

@@ -18,7 +18,7 @@ exports.storage_trigger = async (data, context) => {
       {
         hostname: "europe-west1-voices-to-emotions.cloudfunctions.net",
         port: 443,
-        path: encodeURIComponent(`/mfcc?uri=https://storage.cloud.google.com/${BUCKET_NAME}/${filename}`),
+        path: encodeURIComponent(`/mfcc?uri=https://storage.googleapis.com/voices-to-emotions-call-data/${BUCKET_NAME}/${filename}`),
         method: "GET"
       },
       resolve

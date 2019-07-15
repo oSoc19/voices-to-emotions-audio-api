@@ -30,13 +30,15 @@ def save_from_uri(uri):
 
         print(req.encoding)
         print(req.content)
+        if req.encoding == 'UTF-8':
+            raise Exception('Invalid file type')
 
         with open(file_path, 'wb') as f:
             f.write(req.content)
 
         return file_path, extension
 
-    raise Exception('Invalid file type!')
+    raise Exception('Invalid file type')
 
 
 def map_predictions(predictions):

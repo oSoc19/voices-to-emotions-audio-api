@@ -15,7 +15,7 @@ exports.storage_trigger = async (data, context) => {
   if (!EXTENSIONS.includes(extension)) return;
 
   var options = {
-    uri: `https://europe-west1-voices-to-emotions.cloudfunctions.net/mfcc?uri=https://storage.googleapis.com/voices-to-emotions-call-data/${BUCKET_NAME}/${filename}`,
+    uri: `https://europe-west1-voices-to-emotions.cloudfunctions.net/mfcc?uri=https://storage.googleapis.com/${BUCKET_NAME}/${filename}`,
     json: true
   };
 

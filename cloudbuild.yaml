@@ -14,3 +14,20 @@ steps:
         "europe-west1"
       ]
     dir: "functions/mfcc"
+  - name: "gcr.io/cloud-builders/gcloud"
+    args: [
+      "functions",
+      "deploy",
+      "storage_trigger",
+      "--trigger-resource",
+      "voices-to-emotions-call-data",
+      "--trigger-event",
+      "google.storage.object.finalize"
+      "--runtime",
+      "nodejs8",
+      "--memory",
+      "1024MB",
+      "--region",
+      "europe-west1"
+    ],
+    dir: "functions/storage_trigger"

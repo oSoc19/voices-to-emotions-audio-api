@@ -1,4 +1,3 @@
 librosa
 numpy
 google-api-python-client
-google-cloud-speech

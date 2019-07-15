@@ -1,4 +1,4 @@
-import os, math, tempfile, io, gc
+import os, math, tempfile, gc
 import librosa
 import numpy as np
 from flask import jsonify
@@ -6,11 +6,6 @@ from werkzeug.utils import secure_filename
 
 # Google AI
 from googleapiclient import discovery
-
-# Google Speech to Text
-from google.cloud import speech
-from google.cloud.speech import enums
-from google.cloud.speech import types
 
 ALLOWED_EXTENSIONS = ['aiff', 'wav', 'mp3']
 MFCC_FEATURES = 20
@@ -26,9 +21,6 @@ emotion_dict = {
     7: 'surprised'
 }
 
-# Instantiates a client
-speech_client = speech.SpeechClient()
-
 
 def map_predictions(predictions):
     res = []
@@ -42,23 +34,6 @@ def map_predictions(predictions):
         res.append(mapped_classes)
 
     return res
-
-
-def transcribe(file_path):
-    # Loads the audio into memory
-    with io.open(file_path, 'rb') as audio_file:
-        content = audio_file.read()
-        audio = types.RecognitionAudio(content=content)
-
-    config = types.RecognitionConfig(
-        encoding=enums.RecognitionConfig.AudioEncoding.LINEAR16,
-        sample_rate_hertz=16000,
-        language_code='en-US')
-
-    # Detects speech in the audio file
-    response = speech_client.recognize(config, audio)
-
-    return response.results
 
 
 def get_predictions(instances):
@@ -141,9 +116,6 @@ def mfcc_post(request):
             predictions = map_predictions(get_predictions(mfcc))
             gc.collect()
 
-            transcriptions = transcribe(target_path)
-            gc.collect()
-
             # Remove the file, KEEP THIS AT THE END!
             os.remove(target_path)
 
@@ -151,9 +123,7 @@ def mfcc_post(request):
                 "type": 'success',
                 "data": {
                     'timestamps': timestamps,
-                    'emotions': predictions,
-                    'transcriptions': transcriptions
-                    # 'mfcc': mfcc
+                    'emotions': predictions
                 }
             })
 

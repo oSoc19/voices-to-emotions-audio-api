@@ -29,7 +29,7 @@ exports.storage_trigger = async (data, context) => {
 
   // Google Cloud Speech => Text
   const client = new speech.SpeechClient();
-  const transcriptions = await client.recognize({
+  const transcriptions = await client.longRunningRecognize({
     audio: { uri: `gs://${BUCKET_NAME}/${filename}` },
     config: {
       encoding: "LINEAR16",

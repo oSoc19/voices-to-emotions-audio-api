@@ -1,6 +1,7 @@
 const path = require("path");
 const https = require("https");
 const speech = require("@google-cloud/speech");
+const rp = require("request-promise-native");
 
 const EXTENSIONS = [".wav", ".mp3", ".aiff"];
 const BUCKET_NAME = "voices-to-emotions-call-data";
@@ -13,19 +14,13 @@ exports.storage_trigger = async (data, context) => {
   let extension = path.extname(filename);
   if (!EXTENSIONS.includes(extension)) return;
 
-  /*let response = await new Promise(resolve =>
-    https.request(
-      {
-        hostname: "europe-west1-voices-to-emotions.cloudfunctions.net",
-        port: 443,
-        path: encodeURIComponent(`/mfcc?uri=https://storage.googleapis.com/voices-to-emotions-call-data/${BUCKET_NAME}/${filename}`),
-        method: "GET"
-      },
-      resolve
-    )
-  );*/
+  var options = {
+    uri: `https://europe-west1-voices-to-emotions.cloudfunctions.net/mfcc?uri=https://storage.googleapis.com/voices-to-emotions-call-data/${BUCKET_NAME}/${filename}`,
+    json: true
+  };
 
-  // console.log({ response });
+  let response = await rp(options);
+  console.log({ response });
 
   // Google Cloud Speech => Text
   let speechClient = new speech.SpeechClient();

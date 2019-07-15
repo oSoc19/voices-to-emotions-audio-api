@@ -32,7 +32,7 @@ exports.storage_trigger = async (data, context) => {
       languageCode: "en-US"
     }
   });
-  let [response] = await operation.promise();
+  let [transcriptions] = await operation.promise();
 
-  console.log(response);
+  console.log(transcriptions);
 };

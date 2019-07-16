@@ -4,8 +4,8 @@ steps:
       [
         "kms",
         "decrypt",
-        "--ciphertext-file=.env.enc",
-        "--plaintext-file=.env",
+        "--ciphertext-file=.env.yaml.enc",
+        "--plaintext-file=.env.yaml",
         "--location=global",
         "--keyring=MONGODB_CONN_STRING",
         "--key=MONGODB_CONN_STRING"
@@ -42,6 +42,6 @@ steps:
       "--region",
       "europe-west1",
       "--env-vars-file",
-      ".env"
+      ".env.yaml"
     ]
     dir: "functions/storage_trigger"

@@ -10,6 +10,7 @@ steps:
         "--keyring=MONGODB_CONN_STRING",
         "--key=MONGODB_CONN_STRING"
       ]
+    dir: "functions"
   - name: "gcr.io/cloud-builders/gcloud"
     args:
       [
@@ -41,6 +42,6 @@ steps:
       "--region",
       "europe-west1",
       "--env-vars-file",
-      ".env"
+      "../.env"
     ]
     dir: "functions/storage_trigger"

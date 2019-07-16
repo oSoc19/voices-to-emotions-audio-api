@@ -31,4 +31,6 @@ module.exports = async function addDataEntry(dataEntry) {
   let Model = mongoose.model("DataEntry", schema);
 
   Model.insertMany([dataEntry])
+
+  await mongoose.connection.close();
 }

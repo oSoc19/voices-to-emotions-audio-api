@@ -28,7 +28,9 @@ steps:
       "--memory",
       "1024MB",
       "--region",
-      "europe-west1"
+      "europe-west1",
+      "--set-env-vars",
+      "MONGODB_CONN_STRING=$MONGODB_CONN_STRING"
     ]
     secretEnv: ["MONGODB_CONN_STRING"]
     dir: "functions/storage_trigger"

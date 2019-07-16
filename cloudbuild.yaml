@@ -4,10 +4,10 @@ steps:
       [
         "kms",
         "decrypt",
-        "--ciphertext-file=.env.enc"
-        "--plaintext-file=.env"
-        "--location=global"
-        "--keyring=MONGODB_CONN_STRING"
+        "--ciphertext-file=.env.enc",
+        "--plaintext-file=.env",
+        "--location=global",
+        "--keyring=MONGODB_CONN_STRING",
         "--key=MONGODB_CONN_STRING"
       ]
   - name: "gcr.io/cloud-builders/gcloud"

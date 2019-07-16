@@ -10,7 +10,7 @@ steps:
         "--keyring=MONGODB_CONN_STRING",
         "--key=MONGODB_CONN_STRING"
       ]
-    dir: "functions"
+    dir: "functions/storage_trigger"
   - name: "gcr.io/cloud-builders/gcloud"
     args:
       [
@@ -31,8 +31,6 @@ steps:
       "functions",
       "deploy",
       "storage_trigger",
-      "--source",
-      "storage_trigger",
       "--trigger-resource",
       "voices-to-emotions-call-data",
       "--trigger-event",
@@ -46,4 +44,4 @@ steps:
       "--env-vars-file",
       ".env"
     ]
-    dir: "functions"
+    dir: "functions/storage_trigger"

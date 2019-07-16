@@ -2,9 +2,8 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 const ObjectId = Schema.ObjectId;
 
-mongoose.connect(process.env.MONGODB_CONN_STRING, { useNewUrlParser: true });
-
 module.exports = async function addDataEntry(dataEntry) {
+  mongoose.connect(process.env.MONGODB_CONN_STRING, { useNewUrlParser: true });
   let db = mongoose.connection;
   await new Promise((resolve, reject) => {
     db.once('error', e => reject(e));

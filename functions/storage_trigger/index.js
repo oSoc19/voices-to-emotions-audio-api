@@ -14,11 +14,12 @@ exports.storage_trigger = async (data, context) => {
   let extension = path.extname(filename);
   if (!EXTENSIONS.includes(extension)) return;
 
+  console.log(process.env)
   console.log(process.env.MONGODB_CONN_STRING);
 
   let fileparts = filename.split("/");
   let user_id = fileparts[0];
-  let timestamp = fileparts.split("-")[0];
+  let timestamp = fileparts[1].split("-")[0];
 
   console.log({ user_id, timestamp });
 
@@ -36,7 +37,7 @@ exports.storage_trigger = async (data, context) => {
   if (response.type === "success") {
     let data = response.data;
 
-    addDataEntry({
+    await addDataEntry({
       emotions: data.emotions,
       timestamps: data.timestamps,
       created: new Date(timestamp),

@@ -4,7 +4,7 @@ const ObjectId = Schema.ObjectId;
 
 mongoose.connect(process.env.MONGODB_CONN_STRING, { useNewUrlParser: true });
 
-export default function addDataEntry(dataEntry) {
+module.exports = async function addDataEntry(dataEntry) {
   let db = mongoose.connection;
   await new Promise((resolve, reject) => {
     db.once('error', e => reject(e));

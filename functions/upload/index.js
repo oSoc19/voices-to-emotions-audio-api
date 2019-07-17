@@ -43,23 +43,19 @@ exports.upload = async (req, res) => {
 
       if (err) throw err;
 
-      res.statusCode = 200;
-      res.end("everythin is fine.");
-    });
+      if (!files.audio || !fields.user_id) {
+        res.statusCode = 400;
+        res.end(JSON.stringify({ type: "error", message: "Bad request" }));
+        return;
+      }
 
-    /*if (fileObject && userId) {
-      let { fieldname, file, filename, encoding, mimetype } = fileObject;
-      let filepath = path.join("/tmp", filename);
-      let writeStream = fs.createWriteStream(filepath);
-      file.pipe(writeStream);
-      await new Promise(resolve => writeStream.once("close", resolve));
-
+      let filepath = files.audio.path;
       let filehash = await hashFromFilePath(filepath);
       let target_path = `${userId}/${Date.now()}-${filehash}${path.extname(
-        filepath
+        files.audio.name
       )}`;
 
-      await storage.bucket(BUCKET_NAME).upload(filename, {
+      await storage.bucket(BUCKET_NAME).upload(filepath, {
         destination: target_path,
         gzip: true,
         metadata: {
@@ -68,15 +64,8 @@ exports.upload = async (req, res) => {
       });
 
       res.statusCode = 200;
-      res.end(JSON.stringify({ type: "success", message: "Upload complete" }));
-      return;
-    } else {
-      console.log({ fileObject, userId });
-      console.error("Bad Request, fileObject and/or userId is undefined!");
-      res.statusCode = 400;
-      res.end(JSON.stringify({ type: "error", message: "Bad request" }));
-      return;
-    }*/
+      res.end(JSON.stringify({ type: "success", message: "Upload completed" }));
+    });
   } catch (e) {
     console.error(e);
 

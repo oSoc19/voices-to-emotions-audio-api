@@ -52,7 +52,7 @@ exports.upload = async (req, res) => {
 
       let filepath = files.audio.path;
       let filehash = await hashFromFilePath(filepath);
-      let target_path = `${userId}/${Date.now()}-${filehash}${path.extname(
+      let target_path = `${fields.user_id}/${Date.now()}-${filehash}${path.extname(
         files.audio.name
       )}`;
 

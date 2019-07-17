@@ -23,7 +23,7 @@ function hashFromFilePath(filePath) {
   return hashFromReadableStream(fs.createReadStream(filePath));
 }
 
-exports.upload = (req, res) => {
+exports.upload = async (req, res) => {
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Credentials', 'true');
   res.setHeader('Content-Type', 'application/json');

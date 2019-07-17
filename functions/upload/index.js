@@ -1,5 +1,5 @@
 const { Storage } = require("@google-cloud/storage");
-const Busboy = require("busboy");
+const formidable = require("formidable");
 const fs = require("fs");
 const path = require("path");
 
@@ -28,7 +28,7 @@ exports.upload = async (req, res) => {
   res.setHeader("Access-Control-Allow-Credentials", "true");
   res.setHeader("Content-Type", "application/json");
 
-  if (req.method !== "POST") {
+  if (req.method.toLowerCase() !== "post") {
     console.error("Bad Request, only POST allowed!");
     res.statusCode = 400;
     res.end(JSON.stringify({ type: "error", message: "Bad Request" }));
@@ -36,24 +36,18 @@ exports.upload = async (req, res) => {
   }
 
   try {
-    let busboy = new Busboy({ headers: req.headers });
-    let fileObject = null;
-    let userId = "";
-    busboy.on("file", (fieldname, file, filename, encoding, mimetype) => {
-      if (fieldname === "audio") {
-        file = { fieldname, file, filename, encoding, mimetype };
-      }
-    });
-    busboy.on("field", (fieldname, val) => {
-      if (fieldname === "user_id") {
-        userId = val;
-      }
-    });
-    let finishPromise = new Promise(resolve => busboy.on("finish", resolve));
-    req.pipe(busboy);
-    await finishPromise;
+    let form = new formidable.IncomingForm();
+    form.uploadDir = TEMP_DIR;
 
-    if (fileObject && userId) {
+    let { err, fields, files } = await new Promise(resolve =>
+      form.parse(req, (err, fields, files) => resolve({ err, fields, files }))
+    );
+
+    if (err) throw err;
+
+    console.log({ err, fields, files });
+
+    /*if (fileObject && userId) {
       let { fieldname, file, filename, encoding, mimetype } = fileObject;
       let filepath = path.join("/tmp", filename);
       let writeStream = fs.createWriteStream(filepath);
@@ -82,7 +76,10 @@ exports.upload = async (req, res) => {
       res.statusCode = 400;
       res.end(JSON.stringify({ type: "error", message: "Bad request" }));
       return;
-    }
+    }*/
+
+    res.statusCode = 200;
+    res.end("everythin is fine.");
   } catch (e) {
     console.error(e);
 

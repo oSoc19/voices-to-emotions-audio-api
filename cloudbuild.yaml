@@ -45,3 +45,17 @@ steps:
       ".env.yaml"
     ]
     dir: "functions/storage_trigger"
+  - name: "gcr.io/cloud-builders/gcloud"
+    args: [
+      "functions",
+      "deploy",
+      "upload",
+      "--trigger-http",
+      "--runtime",
+      "nodejs8",
+      "--memory",
+      "2048MB",
+      "--region",
+      "europe-west1"
+    ]
+    dir: "functions/upload"

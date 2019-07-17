@@ -38,7 +38,7 @@ exports.upload = async (req, res) => {
   try {
     let form = new formidable.IncomingForm();
     form.uploadDir = TEMP_DIR;
-    form.parse(req, (err, fields, files) => {
+    form.parse(req, async (err, fields, files) => {
       console.log({ err, fields, files });
 
       if (err) throw err;

@@ -2,6 +2,7 @@ const { Storage } = require("@google-cloud/storage");
 const formidable = require("formidable-serverless");
 const fs = require("fs");
 const path = require("path");
+const crypto = require("crypto");
 
 const storage = new Storage();
 const BUCKET_NAME = "voices-to-emotions-call-data";

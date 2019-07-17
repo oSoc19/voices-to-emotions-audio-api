@@ -38,14 +38,14 @@ exports.upload = async (req, res) => {
   try {
     let form = new formidable.IncomingForm();
     form.uploadDir = TEMP_DIR;
+    form.parse(req, (err, fields, files) => {
+      console.log({ err, fields, files });
 
-    let { err, fields, files } = await new Promise(resolve =>
-      form.parse(req, (err, fields, files) => resolve({ err, fields, files }))
-    );
+      if (err) throw err;
 
-    if (err) throw err;
-
-    console.log({ err, fields, files });
+      res.statusCode = 200;
+      res.end("everythin is fine.");
+    });
 
     /*if (fileObject && userId) {
       let { fieldname, file, filename, encoding, mimetype } = fileObject;
@@ -77,9 +77,6 @@ exports.upload = async (req, res) => {
       res.end(JSON.stringify({ type: "error", message: "Bad request" }));
       return;
     }*/
-
-    res.statusCode = 200;
-    res.end("everythin is fine.");
   } catch (e) {
     console.error(e);
 

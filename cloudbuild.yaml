@@ -1,16 +1,18 @@
 steps:
-  - name: gcr.io/cloud-builders/gcloud
-    args:
-      [
-        "kms",
-        "decrypt",
-        "--ciphertext-file=.env.yaml.enc",
-        "--plaintext-file=.env.yaml",
-        "--location=global",
-        "--keyring=MONGODB_CONN_STRING",
-        "--key=MONGODB_CONN_STRING"
-      ]
-    dir: "functions/storage_trigger"
+  - name: "gcr.io/cloud-builders/gcloud"
+    args: [
+      "functions",
+      "deploy",
+      "upload",
+      "--trigger-http",
+      "--runtime",
+      "nodejs8",
+      "--memory",
+      "2048MB",
+      "--region",
+      "europe-west1"
+    ]
+    dir: "functions/upload"
   - name: "gcr.io/cloud-builders/gcloud"
     args:
       [
@@ -26,6 +28,18 @@ steps:
         "europe-west1"
       ]
     dir: "functions/mfcc"
+  - name: gcr.io/cloud-builders/gcloud
+    args:
+      [
+        "kms",
+        "decrypt",
+        "--ciphertext-file=.env.yaml.enc",
+        "--plaintext-file=.env.yaml",
+        "--location=global",
+        "--keyring=MONGODB_CONN_STRING",
+        "--key=MONGODB_CONN_STRING"
+      ]
+    dir: "functions/storage_trigger"
   - name: "gcr.io/cloud-builders/gcloud"
     args: [
       "functions",
@@ -45,17 +59,3 @@ steps:
       ".env.yaml"
     ]
     dir: "functions/storage_trigger"
-  - name: "gcr.io/cloud-builders/gcloud"
-    args: [
-      "functions",
-      "deploy",
-      "upload",
-      "--trigger-http",
-      "--runtime",
-      "nodejs8",
-      "--memory",
-      "2048MB",
-      "--region",
-      "europe-west1"
-    ]
-    dir: "functions/upload"

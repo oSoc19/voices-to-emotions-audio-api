@@ -7,9 +7,12 @@ from flask import jsonify
 from googleapiclient import discovery
 
 ALLOWED_EXTENSIONS = ['aiff', 'wav', 'mp3']
-MFCC_FEATURES = 12
+MFCC_FEATURES = 20
 MFCC_LENGTH = 200
-SILENCE_TRESHOLD = 50
+SILENCE_TRESHOLD = 35
+AI_VERSION = 'v1_1'
+GCP_PROJECT = 'voices-to-emotions'
+GCP_MODEL = 'emotionrecognition'
 
 emotion_dict = {
     0: 'neutral',
@@ -58,15 +61,8 @@ def map_predictions(predictions):
 
 
 def get_predictions(instances):
-    project = 'voices-to-emotions'
-    model = 'emotionrecognition'
-    version = 'v2'
-
     service = discovery.build('ml', 'v1')
-    name = 'projects/{}/models/{}'.format(project, model)
-
-    if version is not None:
-        name += '/versions/{}'.format(version)
+    name = 'projects/{}/models/{}/versions/{}'.format(GCP_PROJECT, GCP_MODEL, AI_VERSION)
 
     response = service.projects().predict(
         name=name,

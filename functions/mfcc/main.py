@@ -8,7 +8,7 @@ from googleapiclient import discovery
 
 ALLOWED_EXTENSIONS = ['aiff', 'wav', 'mp3']
 MFCC_FEATURES = 20
-MFCC_LENGTH = 200
+MFCC_LENGTH = 500
 SILENCE_TRESHOLD = 35
 AI_VERSION = 'v1_1'
 GCP_PROJECT = 'voices-to-emotions'

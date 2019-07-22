@@ -37,6 +37,7 @@ exports.storage_trigger = async (data, context) => {
     await addDataEntry({
       emotions: data.emotions,
       timestamps: data.timestamps,
+      feedback: Math.random(),
       created: new Date(parseInt(timestamp)),
       user_id
     });

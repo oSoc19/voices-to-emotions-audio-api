@@ -9,6 +9,8 @@ let Model = mongoose.model(
   new Schema({
     user_id: ObjectId,
     created: Date,
+    feedback: Number,
+    timestamps: [[Number, Number]],
     emotions: [
       {
         angry: Number,
@@ -20,8 +22,7 @@ let Model = mongoose.model(
         sad: Number,
         surprised: Number
       }
-    ],
-    timestamps: [[Number, Number]]
+    ]
   })
 );
 

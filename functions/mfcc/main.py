@@ -12,7 +12,7 @@ GCP_MODEL = 'emotionrecognition'
 MFCC_FEATURES = 14
 MFCC_LENGTH = 200
 SILENCE_TRESHOLD = 40
-AI_VERSION = 'v3'
+AI_VERSION = 'v3_1'
 
 emotion_dict = {
     0: 'neutral',

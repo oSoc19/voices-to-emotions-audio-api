@@ -9,10 +9,10 @@ from googleapiclient import discovery
 ALLOWED_EXTENSIONS = ['aiff', 'wav', 'mp3']
 GCP_PROJECT = 'voices-to-emotions'
 GCP_MODEL = 'emotionrecognition'
-MFCC_FEATURES = 12
+MFCC_FEATURES = 14
 MFCC_LENGTH = 200
-SILENCE_TRESHOLD = 50
-AI_VERSION = 'v2'
+SILENCE_TRESHOLD = 40
+AI_VERSION = 'v3'
 
 emotion_dict = {
     0: 'neutral',

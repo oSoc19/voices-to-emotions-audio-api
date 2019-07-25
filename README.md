@@ -1,6 +1,14 @@
 # Voices To Emotions Audio API
 
+This repository is one of the three repositories used for the voices-to-emotions project. You can find more information about this project [here](https://osoc19.github.io/voices-to-emotions/).
+
 This is the audio api for voices to emotions. Responsible for upload, generating mfcc and uploading audio files.
+
+You can find the other repositories here:
+
+- https://github.com/oSoc19/voices-to-emotions
+- https://github.com/oSoc19/voices-to-emotions-audio-api
+- https://github.com/oSoc19/voices-to-emotions-ai
 
 # Functions
 
